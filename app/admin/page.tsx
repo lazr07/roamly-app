@@ -13,9 +13,19 @@ export default function AdminPage() {
   }, [])
 
   const moderate = async (id: string, status: 'approved' | 'rejected') => {
-    await supabase.from('assets').update({ status }).eq('id', id)
-    setPending(prev => prev.filter(a => a.id !== id))
+  const { error } = await supabase
+    .from('assets')
+    .update({ status })
+    .eq('id', id)
+
+  if (error) {
+    console.error('Moderation failed:', error.message)
+    alert('Error: ' + error.message)
+    return
   }
+
+  setPending(prev => prev.filter(a => a.id !== id))
+}
 
   return (
     <main className="max-w-4xl mx-auto px-4 py-10">

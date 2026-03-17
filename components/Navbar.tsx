@@ -8,7 +8,7 @@ export default async function Navbar() {
   return (
     <nav className="bg-emerald-700 text-white px-6 py-4 flex items-center justify-between">
       <Link href="/" className="text-xl font-bold tracking-tight">
-        🗺️ VisitLocal
+        🗺️ Roamly
       </Link>
       <div className="flex gap-6 items-center text-sm font-medium">
         <Link href="/" className="hover:underline">Browse</Link>

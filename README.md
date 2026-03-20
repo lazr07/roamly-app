@@ -1,109 +1,237 @@
-<a href="https://demo-nextjs-with-supabase.vercel.app/">
-  <img alt="Next.js and Supabase Starter Kit - the fastest way to build apps with Next.js and Supabase" src="https://demo-nextjs-with-supabase.vercel.app/opengraph-image.png">
-  <h1 align="center">Next.js and Supabase Starter Kit</h1>
-</a>
+# Roamly — Community Tourist Assistant
 
-<p align="center">
- The fastest way to build apps with Next.js and Supabase
-</p>
+A crowd-sourced tourist information platform built with Next.js, Supabase, and Tailwind CSS.
+Members of the public can discover, contribute, and review local tourist destinations — from
+heritage sites and beaches to nightlife and dining.
 
-<p align="center">
-  <a href="#features"><strong>Features</strong></a> ·
-  <a href="#demo"><strong>Demo</strong></a> ·
-  <a href="#deploy-to-vercel"><strong>Deploy to Vercel</strong></a> ·
-  <a href="#clone-and-run-locally"><strong>Clone and run locally</strong></a> ·
-  <a href="#feedback-and-issues"><strong>Feedback and issues</strong></a>
-  <a href="#more-supabase-examples"><strong>More Examples</strong></a>
-</p>
-<br/>
+---
+
+## Live Demo
+
+https://roamly-app-ebhg.vercel.app/
+
+---
 
 ## Features
 
-- Works across the entire [Next.js](https://nextjs.org) stack
-  - App Router
-  - Pages Router
-  - Proxy
-  - Client
-  - Server
-  - It just works!
-- supabase-ssr. A package to configure Supabase Auth to use cookies
-- Password-based authentication block installed via the [Supabase UI Library](https://supabase.com/ui/docs/nextjs/password-based-auth)
-- Styling with [Tailwind CSS](https://tailwindcss.com)
-- Components with [shadcn/ui](https://ui.shadcn.com/)
-- Optional deployment with [Supabase Vercel Integration and Vercel deploy](#deploy-your-own)
-  - Environment variables automatically assigned to Vercel project
+- **Browse** — Publicly accessible directory of approved tourist assets
+- **Search & Filter** — Search by keyword and filter by category (Heritage, Beach, Park, etc.)
+- **Map View** — Interactive Leaflet.js map showing asset locations with clickable markers
+- **Asset Detail** — Full description, location, category, and user reviews per asset
+- **Star Ratings** — Authenticated users can leave 1–5 star ratings and written reviews
+- **Submit Places** — Registered users can contribute new tourist assets
+- **Gamification** — Contributors earn +10 points per approved submission
+- **Admin Moderation** — Administrators can approve or reject pending submissions
+- **Authentication** — Email/password registration and login via Supabase Auth
 
-## Demo
+---
 
-You can view a fully working demo at [demo-nextjs-with-supabase.vercel.app](https://demo-nextjs-with-supabase.vercel.app/).
+## Tech Stack
 
-## Deploy to Vercel
+| Technology | Purpose |
+|---|---|
+| Next.js 16 | Full-stack React framework (App Router, SSR) |
+| Supabase | PostgreSQL database, authentication, REST API, RLS |
+| Tailwind CSS | Utility-first CSS framework for responsive UI |
+| TypeScript | Static typing for maintainability |
+| Leaflet.js | Open-source interactive map |
+| Jest | Unit and integration testing |
+| React Testing Library | Component testing utilities |
+| Vercel | Deployment and CDN hosting |
 
-Vercel deployment will guide you through creating a Supabase account and project.
+---
 
-After installation of the Supabase integration, all relevant environment variables will be assigned to the project so the deployment is fully functioning.
+## Database Schema
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fvercel%2Fnext.js%2Ftree%2Fcanary%2Fexamples%2Fwith-supabase&project-name=nextjs-with-supabase&repository-name=nextjs-with-supabase&demo-title=nextjs-with-supabase&demo-description=This+starter+configures+Supabase+Auth+to+use+cookies%2C+making+the+user%27s+session+available+throughout+the+entire+Next.js+app+-+Client+Components%2C+Server+Components%2C+Route+Handlers%2C+Server+Actions+and+Middleware.&demo-url=https%3A%2F%2Fdemo-nextjs-with-supabase.vercel.app%2F&external-id=https%3A%2F%2Fgithub.com%2Fvercel%2Fnext.js%2Ftree%2Fcanary%2Fexamples%2Fwith-supabase&demo-image=https%3A%2F%2Fdemo-nextjs-with-supabase.vercel.app%2Fopengraph-image.png)
+profiles        (id, username, role, points, created_at)
+categories      (id, name, icon)
+assets          (id, title, description, category_id, location,
+                 image_url, lat, lng, status, submitted_by, created_at)
+ratings         (id, asset_id, user_id, score, comment, created_at)
 
-The above will also clone the Starter kit to your GitHub, you can clone that locally and develop locally.
+Asset status values: pending → approved / rejected
+User roles: contributor (default) / admin
 
-If you wish to just develop locally and not deploy to Vercel, [follow the steps below](#clone-and-run-locally).
+---
 
-## Clone and run locally
+## Getting Started
 
-1. You'll first need a Supabase project which can be made [via the Supabase dashboard](https://database.new)
+### Prerequisites
 
-2. Create a Next.js app using the Supabase Starter template npx command
+- Node.js v18 or later
+- Git
+- A free Supabase account
+- A free Vercel account (for deployment)
 
-   ```bash
-   npx create-next-app --example with-supabase with-supabase-app
-   ```
+### Installation
 
-   ```bash
-   yarn create next-app --example with-supabase with-supabase-app
-   ```
+1. Clone the repository
 
-   ```bash
-   pnpm create next-app --example with-supabase with-supabase-app
-   ```
+   git clone https://github.com/lazr07/roamly-app.git
+   cd roamly-app
 
-3. Use `cd` to change into the app's directory
+2. Install dependencies
 
-   ```bash
-   cd with-supabase-app
-   ```
+   npm install
 
-4. Rename `.env.example` to `.env.local` and update the following:
+3. Set up environment variables
 
-  ```env
-  NEXT_PUBLIC_SUPABASE_URL=[INSERT SUPABASE PROJECT URL]
-  NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=[INSERT SUPABASE PROJECT API PUBLISHABLE OR ANON KEY]
-  ```
-  > [!NOTE]
-  > This example uses `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`, which refers to Supabase's new **publishable** key format.
-  > Both legacy **anon** keys and new **publishable** keys can be used with this variable name during the transition period. Supabase's dashboard may show `NEXT_PUBLIC_SUPABASE_ANON_KEY`; its value can be used in this example.
-  > See the [full announcement](https://github.com/orgs/supabase/discussions/29260) for more information.
+   Create a .env.local file in the root directory:
 
-  Both `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` can be found in [your Supabase project's API settings](https://supabase.com/dashboard/project/_?showConnect=true)
+   NEXT_PUBLIC_SUPABASE_URL=https://your-project-id.supabase.co
+   NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-public-key
+   NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=your-anon-public-key
 
-5. You can now run the Next.js local development server:
+   Find these values in your Supabase dashboard under:
+   Project Settings → Data API
 
-   ```bash
+4. Set up the database
+
+   Copy the full SQL schema from /docs/schema.sql and run it in your
+   Supabase dashboard under SQL Editor → New Query.
+
+5. Run the development server
+
    npm run dev
-   ```
 
-   The starter kit should now be running on [localhost:3000](http://localhost:3000/).
+6. Open the app
 
-6. This template comes with the default shadcn/ui style initialized. If you instead want other ui.shadcn styles, delete `components.json` and [re-install shadcn/ui](https://ui.shadcn.com/docs/installation/next)
+   Visit http://localhost:3000
 
-> Check out [the docs for Local Development](https://supabase.com/docs/guides/getting-started/local-development) to also run Supabase locally.
+---
 
-## Feedback and issues
+## Setting Up an Admin Account
 
-Please file feedback and issues over on the [Supabase GitHub org](https://github.com/supabase/supabase/issues/new/choose).
+1. Register a new account on the platform
+2. Go to Supabase dashboard → Table Editor → profiles
+3. Find your user row and change role from contributor to admin
+4. You now have access to the /admin moderation panel
 
-## More Supabase examples
+---
 
-- [Next.js Subscription Payments Starter](https://github.com/vercel/nextjs-subscription-payments)
-- [Cookie-based Auth and the Next.js 13 App Router (free course)](https://youtube.com/playlist?list=PL5S4mPUpp4OtMhpnp93EFSo42iQ40XjbF)
-- [Supabase Auth and the Next.js App Router](https://github.com/supabase/supabase/tree/master/examples/auth/nextjs)
+## Testing
+
+Run the full test suite:
+
+   npm test
+
+Test Coverage:
+
+   ratingUtils.test.ts              Unit         Average rating calculation logic
+   StarRating.test.tsx              Unit         Star component renders and fires correct score
+   AssetCard.test.tsx               Unit         Card renders title, location, category, rating
+   CategoryFilter.test.tsx          Unit         Filter buttons render and trigger onChange
+   integration/submitFlow.test.tsx  Integration  Submit form renders fields for auth user
+
+Run a specific test file:
+
+   npx jest ratingUtils
+   npx jest __tests__/integration
+
+---
+
+## Project Structure
+
+roamly-app/
+├── app/
+│   ├── page.tsx                  Homepage — browse and search assets
+│   ├── layout.tsx                Root layout with Navbar
+│   ├── assets/[id]/page.tsx      Asset detail page with reviews
+│   ├── submit/page.tsx           Submit new place (protected)
+│   ├── admin/page.tsx            Admin moderation panel
+│   └── auth/                     Supabase auth routes
+├── components/
+│   ├── Navbar.tsx                Top navigation bar
+│   ├── AssetCard.tsx             Tourist asset card component
+│   ├── AssetMap.tsx              Leaflet.js interactive map
+│   ├── CategoryFilter.tsx        Category filter pill buttons
+│   └── StarRating.tsx            Interactive star rating input
+├── lib/
+│   └── supabase/
+│       ├── client.ts             Supabase browser client
+│       └── server.ts             Supabase server client
+├── __tests__/
+│   ├── ratingUtils.test.ts
+│   ├── AssetCard.test.tsx
+│   ├── StarRating.test.tsx
+│   ├── CategoryFilter.test.tsx
+│   └── integration/
+│       └── submitFlow.test.tsx
+├── .env.local                    Environment variables (not committed)
+├── .env.example                  Environment variable template
+├── next.config.ts                Next.js configuration
+├── tailwind.config.ts            Tailwind CSS configuration
+└── README.md
+
+---
+
+## 🗺️ Map Feature
+
+The map view uses Leaflet.js with OpenStreetMap tiles (free and open source).
+To make a submitted place appear on the map, provide latitude and longitude
+coordinates in the submit form.
+
+How to find coordinates:
+1. Go to Google Maps (https://maps.google.com)
+2. Right-click the exact location on the map
+3. The first item shown is the coordinates — click to copy
+4. First number = Latitude, second = Longitude
+
+---
+
+## 🚢 Deployment
+
+The app deploys automatically to Vercel on every push to the main branch.
+
+Manual deployment:
+   npx vercel --prod
+
+Environment variables to add in Vercel Dashboard → Settings → Environment Variables:
+   NEXT_PUBLIC_SUPABASE_URL
+   NEXT_PUBLIC_SUPABASE_ANON_KEY
+   NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY
+
+---
+
+## 🔄 Development Workflow
+
+Start a new feature:
+   git checkout -b feature/your-feature-name
+
+Commit your work:
+   git add .
+   git commit -m "feat: description of what you built"
+
+Push and open a pull request:
+   git push origin feature/your-feature-name
+
+Commit Convention:
+   feat:   New feature
+   fix:    Bug fix
+   docs:   Documentation changes
+   test:   Adding or updating tests
+   style:  UI/styling changes
+   chore:  Config or setup tasks
+
+---
+
+## 📋 Agile Sprints
+
+   Sprint 1 — Project setup, database schema, homepage asset grid
+   Sprint 2 — Authentication, protected routes, submit form
+   Sprint 3 — Star ratings, asset detail page, admin moderation
+   Sprint 4 — Map view, gamification, testing, deployment
+
+---
+
+## 📄 Licence
+
+MIT Licence — free to use, modify, and distribute.
+
+---
+
+## 👤 Author
+
+730100507
+ECM3442DA
+GitHub: https://github.com/lazr07
